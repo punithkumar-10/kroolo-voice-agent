@@ -1,0 +1,11 @@
+pyreadline3 #for windows systems
+agno>=0.1.0
+groq
+python-dotenv
+pinecone 
+packaging>=23.1
+pyttsx3
+fastapi
+uvicorn[standard]
+streamlit
+requests
