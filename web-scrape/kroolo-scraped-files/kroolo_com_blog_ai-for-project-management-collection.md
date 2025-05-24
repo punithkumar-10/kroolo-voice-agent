@@ -1,0 +1,73 @@
+[![logo](https://kroolo.com/_next/image?url=https%3A%2F%2Fkroolo-corp-live.vercel.app%2F_next%2Fstatic%2Fmedia%2Flogo.068deb1b.webp&w=3840&q=100)](https://kroolo.com/)
+[Sign up for Free](https://app.kroolo.com/signin)
+[Book a Demo](https://kroolo.com/book-demo)[Login](https://app.kroolo.com/signin)[Sign up for Free](https://app.kroolo.com/signup)
+[![logo](https://kroolo.com/_next/image?url=https%3A%2F%2Fkroolo-corp-live.vercel.app%2F_next%2Fstatic%2Fmedia%2Flogo.068deb1b.webp&w=3840&q=100)](https://kroolo.com/)Close menu
+[Book a Demo](https://kroolo.com/book-demo)[Login](https://app.kroolo.com/signin)[Sign up for Free](https://app.kroolo.com/signup)
+[Home](https://kroolo.com/blog)/[AI](https://kroolo.com/blog/ai)/ AI for Project Management
+# AI for Project Management
+Recently added
+[![sub-category](https://kroolo.com/_next/image?url=https%3A%2F%2Fd1x9j2lb4srxrw.cloudfront.net%2Fmedia%2Fhome%2Fpost%2Fimages%2Ffeature%2FAI_Agentic_Workflows-blog.jpg&w=3840&q=75)AI for Project ManagementWhat Are AI Agentic Workflows? A Beginner’s GuideCCliveMay 2025](https://kroolo.com/blog/ai-agentic-workflow)[![sub-category](https://kroolo.com/_next/image?url=https%3A%2F%2Fd1x9j2lb4srxrw.cloudfront.net%2Fmedia%2Fhome%2Fpost%2Fimages%2Ffeature%2FThumbnails-ai.jpg&w=3840&q=75)AI for Project ManagementHow a Remote Startup Slashed Weekly Standups with Kroolo’s AIJJuliaMay 2025](https://kroolo.com/blog/how-a-remote-startup-slashed-weekly-standups-with-kroolos-ai)[![sub-category](https://kroolo.com/_next/image?url=https%3A%2F%2Fd1x9j2lb4srxrw.cloudfront.net%2Fmedia%2Fhome%2Fpost%2Fimages%2Ffeature%2FThumbnails_LG5Zh80.png&w=3840&q=75)AI for Project Management10 Best Project Management Software for Startups in 2025JJuliaApr 2025](https://kroolo.com/blog/project-management-software-for-startups)[![sub-category](https://kroolo.com/_next/image?url=https%3A%2F%2Fd1x9j2lb4srxrw.cloudfront.net%2Fmedia%2Fhome%2Fpost%2Fimages%2Ffeature%2FThumbnails_koCUpVX.png&w=3840&q=75)AI for Project ManagementThe Ultimate Guide to Creating a High-Level Project Plan for Your TeamCCliveApr 2025](https://kroolo.com/blog/high-level-project-plan)[![sub-category](https://kroolo.com/_next/image?url=https%3A%2F%2Fd1x9j2lb4srxrw.cloudfront.net%2Fmedia%2Fhome%2Fpost%2Fimages%2Ffeature%2Fkroolo_form.png&w=3840&q=75)AI for Project ManagementHow to Use Kroolo Forms for Consolidated Data CollectionIIvanApr 2025](https://kroolo.com/blog/data-collection-form)[![sub-category](https://kroolo.com/_next/image?url=https%3A%2F%2Fd1x9j2lb4srxrw.cloudfront.net%2Fmedia%2Fhome%2Fpost%2Fimages%2Ffeature%2FThumbnails_Giobevg.png&w=3840&q=75)AI for Project ManagementWhat is Project Schedule Management? A Step by Step GuideJJuliaMar 2025](https://kroolo.com/blog/project-schedule-management)[![sub-category](https://kroolo.com/_next/image?url=https%3A%2F%2Fd1x9j2lb4srxrw.cloudfront.net%2Fmedia%2Fhome%2Fpost%2Fimages%2Ffeature%2FHow_to_Manage_a_Sprint_Backlog_for_Agile_Project_Success.png&w=3840&q=75)AI for Project ManagementHow to Manage a Sprint Backlog for Agile Project SuccessCCliveMar 2025](https://kroolo.com/blog/sprint-backlog-in-agile)[![sub-category](https://kroolo.com/_next/image?url=https%3A%2F%2Fd1x9j2lb4srxrw.cloudfront.net%2Fmedia%2Fhome%2Fpost%2Fimages%2Ffeature%2FThumbnails_ViMzic4.png&w=3840&q=75)AI for Project ManagementAI in Project Management: The Future of Automated Task ManagementIIvanJul 2024](https://kroolo.com/blog/ai-in-project-management)[![sub-category](https://kroolo.com/_next/image?url=https%3A%2F%2Fd1x9j2lb4srxrw.cloudfront.net%2Fmedia%2Fhome%2Fpost%2Fimages%2Ffeature%2FThumbnails_cFDhyXN.png&w=3840&q=75)AI for Project ManagementAI in Project Management: Examples of Smart Project ManagementCCliveJun 2024](https://kroolo.com/blog/ai-project-management-examples)
+[![logo](https://kroolo.com/_next/image?url=https%3A%2F%2Fkroolo-corp-live.vercel.app%2F_next%2Fstatic%2Fmedia%2Flogo.068deb1b.webp&w=3840&q=100)](https://kroolo.com/)
+Enterprise grade security
+We are certified
+![logo](https://kroolo.com/_next/image?url=https%3A%2F%2Fkroolo-corp-live.vercel.app%2F_next%2Fstatic%2Fmedia%2FAicpaLogo.2ce146a5.png&w=128&q=100)
+![logo](https://kroolo.com/_next/image?url=https%3A%2F%2Fkroolo-corp-live.vercel.app%2F_next%2Fstatic%2Fmedia%2FISOlogo.7d3713bf.png&w=128&q=100)
+Products
+  * [Kroolo AI](https://kroolo.com/features/ai)
+  * [Project & Sprints](https://kroolo.com/features/projects)
+  * [Portfolio](https://kroolo.com/features/portfolio)
+  * [Tasks](https://kroolo.com/features/tasks)
+  * [Automations](https://kroolo.com/features/automations)
+  * [Goal & OKRs](https://kroolo.com/features/goals)
+  * [Docs](https://kroolo.com/features/docs)
+  * [Chats](https://kroolo.com/features/chats)
+  * [Forms](https://kroolo.com/features/forms)
+  * [Track Time](https://kroolo.com/features/track-time)
+
+
+AI Tools
+  * [Grammar Checker](https://kroolo.com/ai-tools/grammar-checker)
+  * [Paraphraser](https://kroolo.com/ai-tools/paraphraser)
+  * [Summarizer](https://kroolo.com/ai-tools/summarizer)
+  * [Translator](https://kroolo.com/ai-tools/translator)
+
+
+Solutions
+  * [Engineering](https://kroolo.com/solutions/engineering)
+  * [Marketing](https://kroolo.com/solutions/marketing)
+  * [Product management](https://kroolo.com/solutions/product-management)
+  * [Project management](https://kroolo.com/solutions/project-management)
+  * [HR & Recruitment](https://kroolo.com/solutions/hr-recruitment)
+  * [Support and Business operations](https://kroolo.com/solutions/business-operations)
+
+
+Resources
+  * [Blogs](https://kroolo.com/blog)
+  * [Changelog](https://kroolo.featurebase.app/changelog)
+  * [Feedback](https://kroolo.featurebase.app)
+  * [Help center](https://help.kroolo.com/)
+  * [Pricing](https://kroolo.com/pricing)
+  * [Videos](https://kroolo.com/videos)
+
+
+Compare
+  * [vs Asana](https://kroolo.com/compare/kroolo-vs-asana)
+  * [vs Basecamp](https://kroolo.com/compare/kroolo-vs-basecamp)
+  * [vs ClickUp](https://kroolo.com/compare/kroolo-vs-clickup)
+  * [vs Jira](https://kroolo.com/compare/kroolo-vs-jira)
+  * [vs Monday](https://kroolo.com/compare/kroolo-vs-monday)
+  * [vs MS Project](https://kroolo.com/compare/kroolo-vs-microsoft-project)
+  * [vs Notion](https://kroolo.com/compare/kroolo-vs-notion)
+  * [vs Slack](https://kroolo.com/compare/kroolo-vs-slack)
+  * [vs Smartsheet](https://kroolo.com/compare/kroolo-vs-smartsheet)
+  * [vs Todoist](https://kroolo.com/compare/kroolo-vs-todoist)
+  * [vs Trello](https://kroolo.com/compare/kroolo-vs-trello)
+
+
+Contact Us
+  * [Book a Demo](https://kroolo.com/book-demo)
+  * [Support](https://kroolo.com/contact-support)
+
+
+[![social-icon](https://kroolo-corp-live.vercel.app/_next/static/media/linkedin.649b6cf5.svg)](https://www.linkedin.com/company/getkroolo/)[![social-icon](https://kroolo-corp-live.vercel.app/_next/static/media/facebook.4b12489e.svg)](https://www.facebook.com/people/Kroolo/61553808299270/)[![social-icon](https://kroolo-corp-live.vercel.app/_next/static/media/instagram.a0617909.svg)](https://www.instagram.com/getkroolo)[![social-icon](https://kroolo-corp-live.vercel.app/_next/static/media/twitter.8613d45d.svg)](https://www.twitter.com/getkroolo)[![social-icon](https://kroolo-corp-live.vercel.app/_next/static/media/youtube.b846fe90.svg)](https://youtube.com/@getkroolo?si=z2hD5yQsZ7h6jhdw)
+[Cookie Policy](https://kroolo.com/legal/cookie-policy)[Privacy Policy](https://kroolo.com/legal/privacy-policy)[Security](https://kroolo.com/legal/security)[Terms of Use](https://kroolo.com/legal/terms-of-use)
