@@ -7,20 +7,23 @@ from pinecone import Pinecone, ServerlessSpec
 from sentence_transformers import SentenceTransformer
 import speech_recognition as sr
 import time
-import pyttsx3 # Keep the import
+import pyttsx3
 from fastapi import FastAPI, BackgroundTasks
 from pydantic import BaseModel
 import uvicorn
+import re  
+import traceback  
+import sys 
 
 load_dotenv()
+
+MAX_HISTORY_TURNS_FOR_PROMPT = 5
+
+recognizer = sr.Recognizer()  
 
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-if not PINECONE_API_KEY:
-    raise ValueError("PINECONE_API_KEY not found")
-if not GEMINI_API_KEY:
-    raise ValueError("GEMINI_API_KEY not found")
 
 embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
 expected_dimension = embedding_model.get_sentence_embedding_dimension()
@@ -28,17 +31,16 @@ expected_dimension = embedding_model.get_sentence_embedding_dimension()
 pinecone = Pinecone(api_key=PINECONE_API_KEY)
 index_name = "kroolo"
 existing_indexes = [idx.name for idx in pinecone.list_indexes()]
+
 if index_name not in existing_indexes:
-    print(f"Index '{index_name}' not found. Creating new index with dimension {expected_dimension} for model 'all-MiniLM-L6-v2'.")
     pinecone.create_index(
         name=index_name,
         dimension=expected_dimension,
         metric="cosine",
         spec=ServerlessSpec(cloud='aws', region='us-east-1')
     )
-    for _ in range(10):
+    for _ in range(10): 
         if index_name in [idx.name for idx in pinecone.list_indexes()]:
-            print(f"Index '{index_name}' created successfully.")
             break
         time.sleep(2)
     else:
@@ -47,7 +49,6 @@ else:
     try:
         index_description = pinecone.describe_index(index_name)
         actual_dimension = index_description.dimension
-        print(f"Using existing index '{index_name}' with dimension {actual_dimension}.")
         if actual_dimension != expected_dimension:
             print(f"CRITICAL WARNING: Index dimension {actual_dimension} does not match model dimension {expected_dimension}.")
     except Exception as e:
@@ -55,9 +56,11 @@ else:
 
 index = pinecone.Index(index_name)
 
+#Function to generate text embeddings
 def embed_text(text):
     return embedding_model.encode([text])[0].tolist()
 
+#Function to search Kroolo help context in Pinecone
 def search_kroolo_help_context(query, top_k=2):
     query_vector = embed_text(query)
     try:
@@ -140,72 +143,67 @@ help_specialist_agent = Agent(
 async def get_agent_response_async(user_message: str, conversation_history: list[dict[str, str]]) -> str:
     try:
         retrieved_texts = retrieve_context_for_query(user_message)
-        context_for_prompt = "No context found."
         if retrieved_texts:
             full_context = "\\n\\n".join(retrieved_texts)
             max_context_length = 2000 
-            context_for_prompt = full_context[:max_context_length] + ("... [context truncated]" if len(full_context) > max_context_length else "")
+            if len(full_context) > max_context_length:
+                context_for_prompt = full_context[:max_context_length] + "... [context truncated]"
+            else:
+                context_for_prompt = full_context
+        else:
+            context_for_prompt = "No context found."
 
         history_for_prompt = ""
         if conversation_history:
-            formatted_history_turns = []
-            prompt_history_window = conversation_history[-(MAX_HISTORY_TURNS_FOR_PROMPT * 2):] 
-            for turn in prompt_history_window:
-                if turn.get('content'):
-                    formatted_history_turns.append(f"{turn['role'].capitalize()}: {turn['content']}")
-            if formatted_history_turns:
+            prompt_history_window = conversation_history[-(MAX_HISTORY_TURNS_FOR_PROMPT * 2):]
+            
+            formatted_turns = [
+                f"{turn['role'].capitalize()}: {turn['content']}"
+                for turn in prompt_history_window if turn.get('content')
+            ]
+            
+            if formatted_turns:
                 history_for_prompt = (
                     "---CONVERSATION HISTORY START---\\n"
-                    f"{'\\n'.join(formatted_history_turns)}\\n"
+                    f"{'\\n'.join(formatted_turns)}\\n"
                     "---CONVERSATION HISTORY END---\\n\\n"
                 )
-
-        # Construct the prompt for the agent
-        query_with_context_and_history = (
+        
+        prompt = (
             f"{history_for_prompt}"
             f"Context Data:\\n---CONTEXT START---\\n{context_for_prompt}\\n---CONTEXT END---\\n\\n"
             f"User Question:\\n{user_message}"
         )
 
-        response_obj = await help_specialist_agent.arun(query_with_context_and_history, stream=False)
+        response_obj = await help_specialist_agent.arun(prompt, stream=False)
 
         if response_obj:
-            raw_response = str(response_obj.content).strip() if hasattr(response_obj, 'content') and response_obj.content else str(response_obj).strip()
-            import re
-            cleaned_response = re.sub(r"  +", " ", raw_response)
-            return cleaned_response.strip()
+            raw_response = getattr(response_obj, 'content', str(response_obj))
+            cleaned_response = re.sub(r"\\s\\s+", " ", str(raw_response).strip()) # Ensure it's a string, remove extra spaces
+            return cleaned_response
+        
         return "Error: No response received from the specialist agent."
+
     except Exception as e:
-        import traceback
         print(f"Error in get_agent_response_async: {e}")
         traceback.print_exc()
         return f"I encountered a critical error processing your request: {str(e)}"
 
 
-MAX_HISTORY_TURNS_FOR_PROMPT = 5
-
-recognizer = sr.Recognizer() 
-
-# --- TTS Voice Selection and Speaking is now handled within speak_text_sync ---
-
+#Text-to-Speech function
 def speak_text_sync(text_to_speak):
     tts_success = False
     engine = None  
     try:
-        print("Speak (Backend): Initializing pyttsx3 engine...")
         engine = pyttsx3.init()
         if engine is None:
-            print("Speak (Backend): CRITICAL - pyttsx3.init() returned None. Cannot speak.")
             return False 
-        
+
         if hasattr(engine, '_inLoop') and engine._inLoop:
             try:
-                print("Speak (Backend): Engine was in loop, attempting endLoop().")
                 engine.endLoop()
-                print("Speak (Backend): endLoop() called. Re-initializing engine.")
                 engine = pyttsx3.init() 
                 if engine is None:
-                    print("Speak (Backend): CRITICAL - pyttsx3.init() after endLoop returned None.")
                     return False
             except Exception as e_loop:
                 print(f"Speak (Backend): Error during endLoop/re-init: {e_loop}")
@@ -228,25 +226,19 @@ def speak_text_sync(text_to_speak):
                     break
             if selected_voice_id:
                 break
-        
+
         if not selected_voice_id and voices:
             selected_voice_id = voices[0].id 
             current_voice_name = voices[0].name
-            print(f"Speak (Backend): Preferred voices not found, using fallback: {current_voice_name}")
         
         if selected_voice_id:
             engine.setProperty('voice', selected_voice_id)
-            print(f"Speak (Backend): Using voice: {current_voice_name}")
         else:
-            print("Speak (Backend): CRITICAL - No voices found for TTS. Cannot speak.")
-            return False 
+            return False
 
-        print(f"Speak (Backend): Attempting to say: '{text_to_speak[:70].replace(chr(10), " ") + "..." if len(text_to_speak) > 70 else text_to_speak.replace(chr(10), " ")}'")
+        #Speak the text
         engine.say(text_to_speak)
         engine.runAndWait()
-        print("Speak (Backend): runAndWait completed.")
-        import sys
-        sys.stdout.flush() 
         tts_success = True
     except RuntimeError as e:
         print(f"Speak (Backend): RuntimeError in speak_text_sync (often indicates engine issues): {e}")
@@ -260,17 +252,15 @@ def speak_text_sync(text_to_speak):
     finally:
         try:
             if engine is not None:
-                engine.stop()  
+                engine.stop() 
         except Exception as stop_exc:
             print(f"Speak (Backend): Exception during engine.stop(): {stop_exc}")
-        print(f"Speak (Backend): Exiting speak_text_sync. Success: {tts_success}")
         return tts_success
+    
 
 
-# --- FastAPI Setup ---
 app = FastAPI()
 
-# --- Pydantic Models ---
 class QueryRequest(BaseModel):
     user_message: str
     conversation_history: list[dict[str, str]] = []
@@ -287,13 +277,14 @@ class VoiceInteractionManager:
         self.user_speech: str | None = None
         self.agent_response: str | None = None
         self.error_message: str | None = None
-        self.status_message: str = "idle" 
+        self.status_message: str = "idle"  #idle, queued, listening, recognizing, responding, complete, error
 
     def reset(self):
         self.user_speech = None
         self.agent_response = None
         self.error_message = None
 
+# Global instance
 voice_interaction_manager = VoiceInteractionManager()
 
 async def process_single_voice_interaction(current_conversation_history: list[dict[str, str]]):
@@ -302,51 +293,41 @@ async def process_single_voice_interaction(current_conversation_history: list[di
         voice_interaction_manager.reset()
         voice_interaction_manager.is_processing = True 
         voice_interaction_manager.status_message = "listening"
-        print("Background task: Listening...")
 
         with sr.Microphone() as source:
-            recognizer.adjust_for_ambient_noise(source, duration=0.5)
-            recognizer.pause_threshold = 1.2
-            print("Background task: Listening for speech (pause_threshold=1.2s, phrase_time_limit=20s, timeout=7s)...")
+            recognizer.adjust_for_ambient_noise(source, duration=0.5) 
+            recognizer.pause_threshold = 1.2 
             audio = recognizer.listen(source, phrase_time_limit=20, timeout=7)
 
         voice_interaction_manager.status_message = "recognizing"
-        print("Background task: Recognizing...")
         text = recognizer.recognize_google(audio)
         voice_interaction_manager.user_speech = text
-        print(f"Background task: Recognized text: {text}")
 
         history_for_agent = current_conversation_history + [{"role": "user", "content": text}]
-
         voice_interaction_manager.status_message = "responding"
-        print("Background task: Getting agent response...")
         answer = await get_agent_response_async(text, history_for_agent)
         voice_interaction_manager.agent_response = answer
-        print(f"Background task: Agent response: {answer}")
         
         voice_interaction_manager.status_message = "complete"
 
     except sr.WaitTimeoutError:
         voice_interaction_manager.error_message = "No speech detected."
         voice_interaction_manager.status_message = "error"
-        print("Background task: WaitTimeoutError")
     except sr.UnknownValueError:
         voice_interaction_manager.error_message = "Could not understand audio."
         voice_interaction_manager.status_message = "error"
-        print("Background task: UnknownValueError")
     except sr.RequestError as e:
         voice_interaction_manager.error_message = f"Speech recognition service error: {e}"
         voice_interaction_manager.status_message = "error"
-        print(f"Background task: RequestError: {e}")
     except Exception as e:
         print(f"Background task: General error: {e}")
+        traceback.print_exc()
         voice_interaction_manager.error_message = f"An unexpected error occurred during voice processing: {str(e)}"
         voice_interaction_manager.status_message = "error"
     finally:
         voice_interaction_manager.is_processing = False
-        print(f"Background task: Processing finished. Status: {voice_interaction_manager.status_message}")
 
-#API Endpoints
+#API endpoints
 @app.post("/chat")
 async def http_chat(request: QueryRequest):
     answer = await get_agent_response_async(request.user_message, request.conversation_history)
@@ -355,17 +336,17 @@ async def http_chat(request: QueryRequest):
 @app.post("/speak")
 async def http_speak(request: SpeakRequest):
     try:
-        print(f"Speak (API): Received request to speak: '{request.text[:50]}...'")
+        # Run the synchronous speak_text_sync in a separate thread
+        # to avoid blocking the FastAPI event loop.
         success = await asyncio.to_thread(speak_text_sync, request.text)
         
         if success:
-            print("Speak (API): TTS reported success.")
             return {"status": "success", "message": "Speech completed successfully."}
         else:
-            print("Speak (API): TTS reported failure.")
             return {"status": "error", "message": "TTS engine failed to speak or encountered an internal issue."}
     except Exception as e:
         print(f"Speak (API): Error in /speak endpoint: {e}")
+        traceback.print_exc() # Print full traceback
         return {"status": "error", "message": f"An unexpected error occurred in the speak endpoint: {str(e)}"}
 
 @app.post("/voice/initiate")
@@ -373,6 +354,7 @@ async def initiate_voice_interaction_endpoint(request: VoiceInitiateRequest, bac
     if voice_interaction_manager.is_processing:
         return {"status": "error", "message": "A voice interaction is already in progress. Please wait or check status."}
     
+    # Reset state and start background task for voice processing
     voice_interaction_manager.reset()
     voice_interaction_manager.is_processing = True
     voice_interaction_manager.status_message = "queued"
